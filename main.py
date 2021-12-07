@@ -32,10 +32,11 @@ def menu(message):
     bot.send_message(message.chat.id,menu_text,parse_mode='HTML')
 
 def sendMsg(message):
-    sahifa = f"https://github.com/orgs/creativetimofficial/repositories?q={message.text}&type=&language=&sort="
+    text = message.text.capitalize()
+    sahifa = f"https://github.com/orgs/creativetimofficial/repositories?q={text}&type=&language=&sort="
     r = requests.get(sahifa)
     soup = BeautifulSoup(r.text, 'html.parser')
-    get_three = soup.select('ul li[class="Box-row"] ')
+    get_three = soup.select('ul li[class="Box-row"] ')[:10]
     n=1
     general_text = """"""
     links=[]
@@ -58,7 +59,7 @@ def sendMsg(message):
     
     # print(links)
 
-    
+    markup = None
     if len(links) == 1:
         markup = types.InlineKeyboardMarkup(row_width=1)
         itembtna = types.InlineKeyboardButton('1', callback_data=links[0].replace('/creativetimofficial/',''))
@@ -163,10 +164,10 @@ def sendMsg(message):
 
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
-    try:
-        sendMsg(message)
-    except:
-        bot.send_message(message.chat.id,'Not Found')
+    # try:
+    sendMsg(message)
+    # except:
+    #     bot.send_message(message.chat.id,'Not Found')
 
 
 
